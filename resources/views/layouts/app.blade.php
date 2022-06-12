@@ -12,12 +12,12 @@
 
         <!-- Styles -->
         {{-- SE AGREGO EL RANDOM PARA QUE EL EXPLORADOR NO LO CARGUE EN CACHE SOLO EN DESARROLLO --}}
-        <link rel="stylesheet" href="{{ mix('css/app.css') . 'version=' . Str::random() }}">
+        <link rel="stylesheet" href="{{ mix('css/app.css') . '?version=' . Str::random() }}">
 
         @livewireStyles
 
         <!-- Scripts -->
-        <script src="{{ mix('js/app.js') . 'version=' . Str::random() }}" defer></script>
+        <script src="{{ mix('js/app.js') . '?version=' . Str::random() }}" defer></script>
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
