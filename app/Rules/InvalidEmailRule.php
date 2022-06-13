@@ -7,14 +7,15 @@ use Illuminate\Contracts\Validation\Rule;
 
 class InvalidEmailRule implements Rule
 {
+    private $email;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($email = null)
     {
-        //
+        $this->email = $email;
     }
 
     /**
@@ -27,7 +28,13 @@ class InvalidEmailRule implements Rule
     public function passes($attribute, $value)
     {
         return Contact::where('user_id', auth()->user()->id)
-                ->whereHas('user', fn($q) => $q->where('email', $value))
+                ->whereHas('user', fn($q) => 
+                    $q->where('email', $value)
+                        ->when($this->email, fn($q) => 
+                            $q->where('email', '!=', $this->email)
+                        )
+                    
+                )
                 ->count() === 0;
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -84,9 +85,15 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contact $contact)
+    public function update(UpdateContactRequest $request, Contact $contact)
     {
-        //
+        $contact->update($request->validated());
+
+        //ESTAS VARIABLES DE SESSIONES NOS PERMITEN DISPARAR EL BANNER DE JETSTREAM
+        session()->flash('flash.banner', 'El contacto se ha actualizado correctamente');
+        session()->flash('flash.bannerStyle', 'success');
+
+        return redirect()->route('contacts.edit', $contact);
     }
 
     /**
@@ -97,6 +104,12 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        //
+        $contact->delete();
+
+        //ESTAS VARIABLES DE SESSIONES NOS PERMITEN DISPARAR EL BANNER DE JETSTREAM
+        session()->flash('flash.banner', 'El contacto se ha eliminado correctamente');
+        session()->flash('flash.bannerStyle', 'success');
+
+        return redirect()->route('contacts.index');
     }
 }
