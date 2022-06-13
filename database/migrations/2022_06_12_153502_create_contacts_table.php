@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('contact_id')->constrained('users');
+            //$table->unique(['user_id', 'contact_id']);
             $table->timestamps();
         });
     }
