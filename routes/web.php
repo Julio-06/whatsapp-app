@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware('auth')->resource('contacts', ContactController::class);
+Route::middleware('auth')->resource('contacts', ContactController::class)->except('show');

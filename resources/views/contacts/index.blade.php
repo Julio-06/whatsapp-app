@@ -46,7 +46,6 @@
                             <th scope="col" class="px-6 py-3">
                                 Fecha de creación
                             </th>
-                            
                             <th scope="col" class="px-6 py-3">
                                 <span class="sr-only">Edit</span>
                             </th>
@@ -64,9 +63,18 @@
                                 <td class="px-6 py-4">
                                     {{ $contact->created_at }}
                                 </td>
-                                
                                 <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('contacts.edit', $contact->id) }}" class="btn btn-blue">Edit</a>
+                                    <div class="flex justify-end space-x-2">
+                                        <form action="{{ route('contacts.destroy', $contact->id) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+    
+                                            <button type="submit" class="btn bg-red-700 text-zinc-300">Eliminar</button>
+                                        </form>
+
+                                        <a href="{{ route('contacts.edit', $contact->id) }}" class="btn btn-blue">Edit</a>
+                                    </div>
+                                    
                                 </td>
                             </tr>
                         @endforeach  
