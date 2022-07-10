@@ -66,7 +66,9 @@
                 <div class="bg-gray-100 h-16 flex items-center px-3">
                     
                     <figure>
-                        <img class="w-10 h-10 rounded-full object-cover object-center" src="{{ $contactChat->user->profile_photo_url }}" alt="{{ $contactChat->name }}">
+                        <img class="w-10 h-10 rounded-full object-cover object-center" 
+                            src="{{ $contactChat->user->profile_photo_url }}" 
+                            alt="{{ $contactChat->name }}">
                     </figure>
 
                     <div class="ml-4">
@@ -85,8 +87,13 @@
                     {{-- El contenido del chat --}}
                 </div>
 
-                <form class="bg-gray-100 h-16 flex items-center px-4">
-                    <x-jet-input type="text" class="w-full" placeholder="Escriba un mensaje aquí" />
+                <form class="bg-gray-100 h-16 flex items-center px-4" wire:submit.prevent="sendMessage()">
+                    <x-jet-input wire:model="bodyMessage" type="text" class="flex-1" placeholder="Escriba un mensaje aquí" />
+
+                    <button class="flex-shrink-0 ml-4 text-2xl text-gray-700">
+                        <i class="fas fa-share"></i>
+                    </button>
+
                 </form>
 
             @else
