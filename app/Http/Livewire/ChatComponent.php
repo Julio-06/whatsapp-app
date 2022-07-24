@@ -30,6 +30,12 @@ class ChatComponent extends Component
             ->get() ?? [];
     }
 
+    public function getMessagesProperty()
+    {
+        //SE COLOCO DE ESA MANERA PARA RECUPERAR LOS NUEVOS CHATS ENVIADOS POR CADA MENSAJE DE VUELVE A HACER LA CONSULTA
+        return $this->chat ? $this->chat->messages()->get() : [];
+    }
+
     public function open_chat_contact(Contact $contact)
     {
         $chat = auth()->user()
