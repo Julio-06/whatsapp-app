@@ -38,7 +38,7 @@ class ChatComponent extends Component
 
     public function getChatsProperty()
     {
-        return auth()->user()->chats()->get();
+        return auth()->user()->chats()->get()->sortByDesc('last_message_at');
     }
 
     public function open_chat_contact(Contact $contact)
