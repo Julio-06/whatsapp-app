@@ -140,6 +140,8 @@
                             </div>
                         </div>
                     @endforeach
+
+                    <span id="final"></span>
                 </div>
 
                 <form class="bg-gray-100 h-16 flex items-center px-4" wire:submit.prevent="sendMessage()">
@@ -165,5 +167,14 @@
         </div>
 
     </div>
+
+    @push('js')
+        <script>
+            Livewire.on('scrollIntoView', function(){
+                document.getElementById('final').scrollIntoView(true);
+            });
+
+        </script>
+    @endpush
 
 </div>
