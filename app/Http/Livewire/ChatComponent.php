@@ -17,6 +17,17 @@ class ChatComponent extends Component
 
     public $bodyMessage;
 
+    //OYENTES
+    public function getListeners()
+    {
+        $user_id = auth()->user()->id;
+
+        //EVENTO QUE ESTAMOS ESPERANDO ESCUCHAR
+        return [
+            "echo-notification:App.Models.User.{$user_id},notification" => 'render'
+        ];
+    }
+
     //PROPIEDAD COMPUTADAS
     public function getContactsProperty()
     {
