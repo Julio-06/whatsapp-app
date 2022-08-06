@@ -8,18 +8,20 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewMessage extends Notification implements ShouldQueue
+class UserTyping extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    public int $chat_id;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(int $chat_id)
     {
-        //
+        $this->chat_id = $chat_id;
     }
 
     /**
@@ -62,6 +64,8 @@ class NewMessage extends Notification implements ShouldQueue
 
     public function toBroadcast($notifiable)
     {
-        return new BroadcastMessage([]);
+        return new BroadcastMessage([
+            'chat_id' => $this->chat_id
+        ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Chat;
 use App\Models\Contact;
 use App\Notifications\NewMessage;
+use App\Notifications\UserTyping;
 use Livewire\Component;
 
 use Illuminate\Support\Facades\Notification;
@@ -13,7 +14,7 @@ class ChatComponent extends Component
 {
     public $search;
 
-    public $contactChat, $chat;
+    public $contactChat, $chat, $chat_id;
 
     public $bodyMessage;
 
@@ -60,6 +61,16 @@ class ChatComponent extends Component
         return $this->chat ? $this->chat->users->where('id', '!=', auth()->id()) : [];
     }
 
+    //CICLO DE VIDA
+    public function updatedBodyMessage($value)
+    {
+        if($value){
+            //NOTIFICAR AL USUARIO QUE SU CONTACTO ESTA ESCRIBIENDO
+            Notification::send($this->users_notifications, new UserTyping($this->chat->id));
+        }
+    }
+
+    //MÉTODOS   
     public function open_chat_contact(Contact $contact)
     {
         $chat = auth()->user()
@@ -73,6 +84,7 @@ class ChatComponent extends Component
 
         if($chat){
             $this->chat = $chat;
+            $this->chat_id = $chat->id;
             $this->reset('contactChat', 'bodyMessage', 'search');
 
         }else{
@@ -85,6 +97,7 @@ class ChatComponent extends Component
     public function open_chat(Chat $chat)
     {
         $this->chat = $chat;
+        $this->chat_id = $chat->id;
         $this->reset('contactChat', 'bodyMessage');
     }
 
@@ -96,7 +109,7 @@ class ChatComponent extends Component
 
         if(!$this->chat){
             $this->chat = Chat::create();
-
+            $this->chat_id = $this->chat->id;
             $this->chat->users()->attach([auth()->user()->id, $this->contactChat->contact_id]);
         }
 
