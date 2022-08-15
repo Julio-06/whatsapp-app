@@ -165,7 +165,7 @@ class ChatComponent extends Component
                 'is_read' => true
             ]);
     
-            Notification::send($this->users_notifications, new NewMessage());
+            //Notification::send($this->users_notifications, new NewMessage());
 
             $this->emit('scrollIntoView');
         }
