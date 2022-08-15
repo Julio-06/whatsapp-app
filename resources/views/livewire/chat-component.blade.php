@@ -123,9 +123,17 @@
                         <p class="text-gray-600 text-xs" x-show="chat_id == typingChatId">
                             Escribiendo ...
                         </p>
-                        <p class="text-green-500 text-xs" x-show="chat_id != typingChatId">
-                            Online
-                        </p>
+
+                        @if ($this->active)
+                            <p class="text-green-500 text-xs" x-show="chat_id != typingChatId" id="online">
+                                Online
+                            </p>
+                        @else
+                            <p class="text-red-600 text-xs" x-show="chat_id != typingChatId" id="offline">
+                                Offline
+                            </p>
+                        @endif
+                
                     </div>
 
                 </div>

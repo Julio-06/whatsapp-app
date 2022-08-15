@@ -18,6 +18,13 @@ class ChatComponent extends Component
 
     public $bodyMessage;
 
+    public $users;
+
+    public function mount()
+    {
+        $this->users = collect();
+    }
+
     //OYENTES
     public function getListeners()
     {
@@ -61,7 +68,12 @@ class ChatComponent extends Component
 
     public function getUsersNotificationsProperty()
     {
-        return $this->chat ? $this->chat->users->where('id', '!=', auth()->id()) : [];
+        return $this->chat ? $this->chat->users->where('id', '!=', auth()->id()) : collect();
+    }
+
+    public function getActiveProperty()
+    {
+        return $this->users->contains($this->users_notifications->first()->id);
     }
 
     //CICLO DE VIDA
@@ -127,19 +139,21 @@ class ChatComponent extends Component
         $this->reset('bodyMessage', 'contactChat');
     }
 
-    public function chatHere($event)
+    public function chatHere($users)
     {
-        
+        $this->users = collect($users)->pluck('id');
     }
 
-    public function chatJoining($event)
+    public function chatJoining($user)
     {
-
+        $this->users->push($user['id']);
     }
 
-    public function chatLeaving($event)
+    public function chatLeaving($user)
     {
-        dd($event);
+        $this->users = $this->users->filter(function($id) use($user) {
+            return $id != $user['id'];
+        });
     }
 
     public function render()
