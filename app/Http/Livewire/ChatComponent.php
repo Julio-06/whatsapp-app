@@ -25,7 +25,10 @@ class ChatComponent extends Component
 
         //EVENTO QUE ESTAMOS ESPERANDO ESCUCHAR
         return [
-            "echo-notification:App.Models.User.{$user_id},notification" => 'render'
+            "echo-notification:App.Models.User.{$user_id},notification" => 'render',
+            "echo-presence:chat.1,here" => 'chatHere',
+            "echo-presence:chat.1,joining" => 'chatJoining',
+            "echo-presence:chat.1,leaving" => 'chatLeaving',
         ];
     }
 
@@ -122,6 +125,21 @@ class ChatComponent extends Component
         Notification::send($this->users_notifications, new NewMessage());
 
         $this->reset('bodyMessage', 'contactChat');
+    }
+
+    public function chatHere($event)
+    {
+        
+    }
+
+    public function chatJoining($event)
+    {
+
+    }
+
+    public function chatLeaving($event)
+    {
+        dd($event);
     }
 
     public function render()
