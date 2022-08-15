@@ -69,20 +69,37 @@
 
                             <div class="w-[calc(100%-4rem)] py-4 border-b border-gray-200">
                                 <div class="flex justify-between items-center">
-                                    <p>
-                                        {{ $chatItem->name }}
-                                    </p>
-    
-                                    <p class="text-xs">
-                                        {{ $chatItem->last_message_at->format('d-m-y h:i A') }}
-                                    </p>
-                                </div>
+                                    <div>
+                                        <p>
+                                            {{ $chatItem->name }}
+                                        </p>
 
-                                <p class="text-sm text-gray-700 mt-1 truncate">
-                                    {{-- ULTIMO MENSAJE --}}
-                                    {{ $chatItem->messages->last()->body }}
-                                </p>
-                                
+                                        <p class="text-sm text-gray-700 mt-1 truncate">
+                                            {{-- ULTIMO MENSAJE --}}
+                                            {{ $chatItem->messages->last()->body }}
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="text-right">
+                                        <p class="text-xs">
+                                            {{ $chatItem->last_message_at->format('h:i A') }}
+                                        </p>
+
+                                        @if ($chatItem->unread_messages)
+                                            <span 
+                                                class="inline-flex 
+                                                    items-center 
+                                                    justify-center 
+                                                    px-2 py-1 mr-2 text-xs font-bold leading-none text-green-100 bg-green-600 rounded-full"
+                                            >
+                                                {{ $chatItem->unread_messages }}
+                                            </span> 
+                                        @endif
+                                        
+                                    </div>
+                                    
+                                </div>
+ 
                             </div>
                         </div>
                     @endforeach
@@ -146,7 +163,11 @@
                                 <p class="text-sm">{{ $message->body }}</p>
 
                                 <p class="{{ $message->user_id == auth()->id() ? 'text-right' : '' }} text-xs text-gray-600 mt-1 "> 
-                                    {{ $message->created_at->format('d-m-y h:i A') }} 
+                                    {{ $message->created_at->format('d-m-y h:i A') }}
+
+                                    @if ($message->user_id == auth()->id())
+                                        <i class="fas fa-check-double ml-2 {{ $message->is_read ? 'text-blue-500' : 'text-gray-600' }}"></i>
+                                    @endif
                                 </p>
                             </div>
                         </div>

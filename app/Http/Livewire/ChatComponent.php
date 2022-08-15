@@ -107,6 +107,7 @@ class ChatComponent extends Component
             $this->reset('chat', 'bodyMessage', 'search');
 
         }
+
     }
 
     public function open_chat(Chat $chat)
@@ -114,6 +115,13 @@ class ChatComponent extends Component
         $this->chat = $chat;
         $this->chat_id = $chat->id;
         $this->reset('contactChat', 'bodyMessage');
+
+        $chat->messages()->where('user_id', '!=', auth()->id())->where('is_read', false)->update([
+            'is_read' => true
+        ]);
+
+        Notification::send($this->users_notifications, new NewMessage());
+
     }
 
     public function sendMessage()
