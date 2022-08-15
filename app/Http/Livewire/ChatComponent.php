@@ -116,12 +116,6 @@ class ChatComponent extends Component
         $this->chat_id = $chat->id;
         $this->reset('contactChat', 'bodyMessage');
 
-        $chat->messages()->where('user_id', '!=', auth()->id())->where('is_read', false)->update([
-            'is_read' => true
-        ]);
-
-        Notification::send($this->users_notifications, new NewMessage());
-
     }
 
     public function sendMessage()
@@ -167,6 +161,12 @@ class ChatComponent extends Component
     public function render()
     {
         if($this->chat){
+            $this->chat->messages()->where('user_id', '!=', auth()->id())->where('is_read', false)->update([
+                'is_read' => true
+            ]);
+    
+            Notification::send($this->users_notifications, new NewMessage());
+
             $this->emit('scrollIntoView');
         }
 
